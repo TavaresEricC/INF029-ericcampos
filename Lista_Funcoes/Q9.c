@@ -20,7 +20,7 @@ masculino; f e F para feminino, o e O para outro).
 
 typedef struct {
     int id;
-    double cpf;
+    long int cpf;
     char nome[tam], sexo;
     struct{
         int dia, mes, ano;
@@ -41,40 +41,109 @@ int validarNome(char nome[tam]){
 
 int validarNascimento(int d, int m, int a){
     setlocale(LC_ALL, "Portuguese");
-    if(m==2){
-        if((d==30 || d==31) && m==2){
-            return 0;
-        }
-        if(d==29 && m==2 && (a%4==0 &&(a%400==0 || a&100!=0))){
-            return 1;
-        }else{
-            return 0;
-        }
+    if(a>0){
+      if(m==2){
+      if((d==30 || d==31) && m==2){
+        return 0;
+      }
+      if(d==29 && m==2 && (a%4==0 &&(a%400==0 || a&100!=0))){
+        return 1;
+      }else{
+        return 0;
+      }
     }else{
-        if(m==4 || m==6 || m==9 || m==11){
-            if(d<=0 && d>30 && a<0){
-                return 0;
-            }else{
-                return 1;
-            }
+      if(m==4 || m==6 || m==9 || m==11){
+        if(d<=0 || d>30 ){
+          return 0;
         }else{
-            if(m==1 || m==3 || m==5 || m==7 || m==8 || m==10 || m==12){
-                if(d<=0 && d>31 && a<0){
-                    return 0;
-                }else{
-                    return 1;
-                }
-            }
+         return 1;
         }
+      }else{
+        if(m==1 || m==3 || m==5 || m==7 || m==8 || m==10 || m==12){
+          if(d<=0 || d>31){
+            return 0;
+          }else{
+            return 1;
+          }
+        }
+      }
     }
+    }
+    
 }
 
-int validarCPF(double CPF){
-    if(CPF>99999999999 || CPF <0){
+int validarCPF(long int CPF){
+  int n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, v1, v2, r1, r2;
+  if(CPF < 10000000000){
+    n1 = 0;
+    n2 = CPF/1000000000;
+    n3 = CPF%1000000000/100000000;
+    n4 = CPF%100000000/10000000;
+    n5 = CPF%10000000/1000000;
+    n6 = CPF%1000000/100000;
+    n7 = CPF%100000/10000;
+    n8 = CPF%10000/1000;
+    n9 = CPF%1000/100;
+    n10 = CPF%100/10;
+    n11 = CPF%10;
+
+    v1 = (n1*10) + (n2*9) + (n3*8) + (n4*7) + (n5*6) + (n6*5) + (n7*4) + (n8*3) + (n9*2);
+    
+    v2 = (n1*11) + (n2*10) + (n3*9) + (n4*8) + (n5*7) + (n6*6) + (n7*5) + (n8*4) + (n9*3) + (n10*2);
+    
+    r1 = (v1*10)%11;
+    r2 = (v2*10)%11;
+    if(r1 == 10){
+      r1 =0;
+    }
+    if(r2 == 10){
+      r2 = 0;
+    }
+
+    if(r1 == n10 && r2 == n11){
+      return 1;
+    }else{
+      return 0;
+    }
+  }else{
+    n1 = CPF/10000000000;
+    n2 = CPF%10000000000/1000000000;
+    n3 = CPF%1000000000/100000000;
+    n4 = CPF%100000000/10000000;
+    n5 = CPF%10000000/1000000;
+    n6 = CPF%1000000/100000;
+    n7 = CPF%100000/10000;
+    n8 = CPF%10000/1000;
+    n9 = CPF%1000/100;
+    n10 = CPF%100/10;
+    n11 = CPF%10;
+
+    v1 = (n1*10) + (n2*9) + (n3*8) + (n4*7) + (n5*6) + (n6*5) + (n7*4) + (n8*3) + (n9*2);
+    
+    v2 = (n1*11) + (n2*10) + (n3*9) + (n4*8) + (n5*7) + (n6*6) + (n7*5) + (n8*4) + (n9*3) + (n10*2);
+    
+    r1 = (v1*10)%11;
+    r2 = (v2*10)%11;
+    if(r1 == 10){
+      r1 =0;
+    }
+    if(r2 == 10){
+      r2 = 0;
+    }
+
+    if(r1 == n10 && r2 == n11){
+      return 1;
+    }else{
+      return 0;
+    }
+  }
+   
+    
+    /*if(CPF>99999999999 || CPF <0){
         return 0;
     }else{
         return 1;
-    }
+    }*/
 }
 
 int validarSexo(char sex){
@@ -115,7 +184,7 @@ cliente cadastrarCliente(){
             return cadastro;
         }else{
             printf("Informe o CPF do cliente (Apenas números. Caso comece com 0, ignore-o): ");
-            scanf("%lf", &cadastro.cpf);
+            scanf("%ld", &cadastro.cpf);
             fflush(stdin);
 
             if(validarCPF(cadastro.cpf) == 0){
@@ -151,7 +220,7 @@ int main(){
         printf("\nDados do cliente");
         printf("\n\nNome do cliente: %s", cadastro.nome);
         printf("Data de nascimento do cliente: %d/%d/%d.\n", cadastro.dataNascimento.dia, cadastro.dataNascimento.mes, cadastro.dataNascimento.ano);
-        printf("CPF do cliente: %.0lf.\n", cadastro.cpf);
+        printf("CPF do cliente: %ld.\n", cadastro.cpf);
         printf("Sexo do cliente: %c.\n", cadastro.sexo);
     }
     return 0;
