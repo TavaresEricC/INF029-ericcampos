@@ -13,8 +13,10 @@ typedef struct{
   char nome[tam], sexo, cpf[cd], dataNascimento[nas];
 }cadastro;
 
-cadastro p1;
+
+
 cadastro cad(){
+  cadastro p1;
   setlocale(LC_ALL, "Portuguese");
   
   printf("\nDigite o nome do cliente: ");

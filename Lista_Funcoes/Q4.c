@@ -5,6 +5,7 @@ para fazer o retorno.*/
 #include <stdio.h>
 #include <locale.h>
 #define tam 3
+
 void ler3Numeros(int a[tam]){
   for(int i = 0; i<3; i++){
     printf("%dº número: ", i+1);

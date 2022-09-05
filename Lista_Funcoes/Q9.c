@@ -137,13 +137,6 @@ int validarCPF(long int CPF){
       return 0;
     }
   }
-   
-    
-    /*if(CPF>99999999999 || CPF <0){
-        return 0;
-    }else{
-        return 1;
-    }*/
 }
 
 int validarSexo(char sex){
@@ -183,7 +176,7 @@ cliente cadastrarCliente(){
         if(validarNascimento(cadastro.dataNascimento.dia, cadastro.dataNascimento.mes, cadastro.dataNascimento.ano) == 0){
             return cadastro;
         }else{
-            printf("Informe o CPF do cliente (Apenas números. Caso comece com 0, ignore-o): ");
+            printf("Informe o CPF do cliente (Apenas números.): ");
             scanf("%ld", &cadastro.cpf);
             fflush(stdin);
 
@@ -220,7 +213,11 @@ int main(){
         printf("\nDados do cliente");
         printf("\n\nNome do cliente: %s", cadastro.nome);
         printf("Data de nascimento do cliente: %d/%d/%d.\n", cadastro.dataNascimento.dia, cadastro.dataNascimento.mes, cadastro.dataNascimento.ano);
-        printf("CPF do cliente: %ld.\n", cadastro.cpf);
+        if(cadastro.cpf < 10000000000){
+        printf("CPF do cliente: %d%ld.\n", 0, cadastro.cpf);  
+        }else{ 
+        printf("CPF do cliente: %ld.\n", cadastro.cpf);  
+        }
         printf("Sexo do cliente: %c.\n", cadastro.sexo);
     }
     return 0;
