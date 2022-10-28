@@ -1,0 +1,1 @@
+char tiralinha(char palavra[]);

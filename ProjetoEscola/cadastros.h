@@ -1,0 +1,1 @@
+int cadastro(pessoa cadaluno[tam], int qtd);

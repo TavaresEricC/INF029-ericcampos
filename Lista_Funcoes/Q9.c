@@ -211,7 +211,7 @@ int main(){
     }else{
         printf("\nCliente cadastrado com sucesso!\n");
         printf("\nDados do cliente");
-        printf("\n\nNome do cliente: %s", cadastro.nome);
+        printf("\n\nNome do cliente: %s.", cadastro.nome);
         printf("Data de nascimento do cliente: %d/%d/%d.\n", cadastro.dataNascimento.dia, cadastro.dataNascimento.mes, cadastro.dataNascimento.ano);
         if(cadastro.cpf < 10000000000){
         printf("CPF do cliente: %d%ld.\n", 0, cadastro.cpf);  
