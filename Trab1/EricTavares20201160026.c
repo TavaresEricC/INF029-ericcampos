@@ -22,9 +22,10 @@
 // #################################################
 
 #include <stdio.h>
-#include "ET2.h" // Substitua pelo seu arquivo de header renomeado
+#include "EricTavares20201160026.h" // Substitua pelo seu arquivo de header renomeado
 #include <stdlib.h>
 #include "trab1.h"
+#include <string.h>
 /*
 ## função utilizada para testes  ##
 
@@ -209,22 +210,61 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
       if(datai.iMes > dataf.iMes){
         dma.retorno = 4;
         return dma;
-      }
-      else if(mesInicial == mesFinal){
-        if(diaInicial > diaFinal){
+      }else if(datai.iMes == dataf.iMes){
+        if(datai.iDia > dataf.iDia){
           dma.retorno = 4;
           return dma;
         }
       }
     }
       //calcule a distancia entre as datas
-
-
+    dma.qtdDias = 0;
+    dma.qtdMeses = 0;
+    dma.qtdAnos = 0;
+    //contdia = datai.iDia, contmes = datai.iMes, contano = datai.iAno
+    int virames = 0, contdia = datai.iDia, contmes = datai.iMes, contano = datai.iAno;
+      
+    while(datai.iDia!=dataf.iDia || datai.iMes!=dataf.iMes || datai.iAno!=dataf.iAno){
+      datai.iDia++;
+      dma.qtdDias++;
+      if(datai.iMes == 2){
+        if(datai.iAno % 4 == 0 && (datai.iAno % 100 != 0 || datai.iAno % 400 == 0)){
+          if(datai.iDia > 29){
+            virames = 1;
+          }
+        }else if(datai.iDia > 28){
+          virames = 1;
+        }
+      }
+      if(datai.iMes == 4 || datai.iMes == 6 || datai.iMes == 9 || datai.iMes == 11){
+        if(datai.iDia > 30){
+          virames = 1;
+        }
+      }else if(datai.iDia > 31){
+        virames = 1;
+      }
+      if(virames == 1){
+        datai.iDia = 1;
+        dma.qtdDias = 0;
+        dma.qtdMeses++;
+        if(dma.qtdMeses == 12){
+          dma.qtdMeses = 0;
+          dma.qtdAnos++;
+        }
+        datai.iMes++;
+        if(datai.iMes > 12){
+        datai.iMes = 1;
+        datai.iAno++;
+        }
+        virames = 0;
+      }
+      
+    }
       //se tudo der certo
       dma.retorno = 1;
       return dma;
       
-    }
+  }
     
 }
 
@@ -240,8 +280,28 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
  */
 int q3(char *texto, char c, int isCaseSensitive)
 {
-    int qtdOcorrencias = -1;
+    int qtdOcorrencias = 0, i;
+    if(isCaseSensitive == 1){
+      for(i=0; texto[i] != '\0'; i++){
+        if(texto[i] == c){
+          qtdOcorrencias++;
+        }
+      }
+    }else{
+      char copia[250];
+      strcpy(copia, texto);
+      viraminuscula(copia);
+      if(c >= 65 && c <= 90){
+        c = c+32;
+      }
 
+      
+      for(i=0; copia[i]!='\0'; i++){
+        if(copia[i] == c){
+          qtdOcorrencias++;
+        }
+      }
+    }
     return qtdOcorrencias;
 }
 
@@ -262,8 +322,30 @@ int q3(char *texto, char c, int isCaseSensitive)
  */
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
-    int qtdOcorrencias = -1;
+    int qtdOcorrencias = 0;
+    int tambusca = strlen(strBusca), tamtexto = strlen(strTexto);
+    int itexto, ibusca, iaux, cont;
+	  int textoint[tamtexto], buscaint[tambusca]; 
+	  tamtexto = viraint(strTexto, tamtexto, textoint);
+	  tambusca = viraint(strBusca, tambusca, buscaint);
 
+
+    for(itexto = 0, cont = 0; itexto < tamtexto; itexto++){
+        if(textoint[itexto] == buscaint[0]){ 
+            for(iaux = itexto, ibusca = 0; ibusca < tambusca; ibusca++, iaux++){ 
+                if(textoint[iaux] != buscaint[ibusca]){
+                    break;
+                }
+            }
+            if(ibusca == tambusca){
+                posicoes[cont] = itexto+1;
+                posicoes[cont+1] = iaux;
+                cont = cont + 2;
+                itexto = iaux - 1;
+                qtdOcorrencias++;
+            }
+        }
+    }
     return qtdOcorrencias;
 }
 
@@ -279,8 +361,13 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
 
 int q5(int num)
 {
-
-    return num;
+  int inverso = 0;
+  while(num>0){
+    inverso = (inverso*10) + (num%10);
+    num = num/10;
+  }
+  
+  return inverso;
 }
 
 /*
@@ -295,6 +382,21 @@ int q5(int num)
 
 int q6(int numerobase, int numerobusca)
 {
-    int qtdOcorrencias;
+    int i, n, aux, aux2, qtdOcorrencias = 0;
+
+	while(numerobase>0){
+		n = numerobase % 10;
+		aux = numerobusca/10; 
+		aux2 = numerobase/10; 
+		for(i = 10; aux > 0; i *= 10, aux /= 10){ 
+			n = n+(aux2 % 10)*i;
+		}
+		
+		if(n == numerobusca){ 
+			qtdOcorrencias++;
+		}
+		
+		numerobase /= 10;
+	}
     return qtdOcorrencias;
 }

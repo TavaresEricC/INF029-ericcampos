@@ -1,4 +1,4 @@
-#include <stdio.h>
+6#include <stdio.h>
 #include <locale.h>
 #define tam 11
 
@@ -35,4 +35,27 @@ int validaData(int dia, int mes, int ano){
     }
   }
   return 1;
+}
+
+void viraminuscula(char texto[]){
+  int i;
+  for(i=0; texto[i]!='\0'; i++){
+    if(texto[i]>=65 && texto[i]<=90){
+      texto[i] = texto[i] + 32;
+    }
+  }
+}
+
+int viraint(char texto[], int Tam, int intexto[]){
+  int i, j;
+  for(i = 0; i<Tam; i++){
+    if(texto[i] == -61){
+      for(j=i; j<Tam; j++){
+        texto[j] = texto[j+1];
+      }
+      Tam--;
+    }
+    intexto[i] = texto[i];
+  }
+  return Tam;
 }
